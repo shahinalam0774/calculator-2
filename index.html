@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <title>জমি ভাগ</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: "Kalpurush", sans-serif; background: #e8f0fe; padding: 40px 0; }
+    .container { max-width: 900px; }
+    .input-card, .result-card {
+      background: linear-gradient(145deg, #ffffff, #dbe6ff);
+      border-radius: 20px; padding: 30px 40px; margin-bottom: 30px;
+      box-shadow: 8px 8px 15px #b3c1ff, -8px -8px 15px #ffffff;
+      transition: box-shadow 0.3s ease;
+    }
+    .input-card:hover {
+      box-shadow: 10px 10px 20px #a1b0ff, -10px -10px 20px #f4f8ff;
+    }
+    label { font-weight: 600; color: #1a237e; }
+    select.form-select, input.form-control {
+      border-radius: 15px; border: none; background: #f0f5ff;
+      box-shadow: inset 5px 5px 10px #b0c4ff, inset -5px -5px 10px #ffffff;
+      transition: box-shadow 0.3s ease;
+    }
+    select:focus, input:focus {
+      outline: none;
+      box-shadow: inset 5px 5px 15px #7a8aff, inset -5px -5px 15px #e6ecff;
+      background: #e6ecff;
+    }
+    button.btn-primary {
+      background: #3949ab; border: none; border-radius: 15px;
+      padding: 12px 40px; font-weight: 700;
+      box-shadow: 5px 5px 10px #2f3e94, -5px -5px 10px #4c61d2;
+      transition: background 0.3s ease;
+    }
+    button.btn-primary:hover {
+      background: #2f3e94;
+      box-shadow: 8px 8px 20px #1c2a6e, -8px -8px 20px #5870ff;
+    }
+    .result-card h4 {
+      font-weight: 700; color: #283593; margin-bottom: 25px;
+      text-align: center; text-shadow: 0 0 8px #6c7ff7;
+    }
+    table {
+      width: 100%; border-collapse: separate; border-spacing: 0 10px;
+      font-weight: 600; color: #1a237e; user-select: none;
+    }
+    th {
+      background: #c5cae9; border-radius: 12px 12px 0 0;
+      padding: 12px 15px; text-align: center;
+      box-shadow: inset 0 -3px 5px #9fa8da;
+    }
+    td {
+      background: #e8ecf9; text-align: center; padding: 12px 15px;
+      border-bottom: 2px solid #c5cae9; box-shadow: inset 0 3px 5px #f2f5ff;
+      border-radius: 0 0 12px 12px; transition: background 0.2s ease;
+    }
+    tr:hover td {
+      background: #c5cae9; color: #283593; font-weight: 700;
+    }
+    .summary-row {
+      font-weight: 700; background: #d0d9ff; color: #283593;
+      box-shadow: inset 4px 4px 10px #b2bffb, inset -4px -4px 10px #f0f3ff;
+    }
+    .summary-row.spouse {
+      background: #cfe2ff; color: #0d6efd;
+    }
+    .summary-row.sons {
+      background: #d1e7dd; color: #198754;
+    }
+    .summary-row.daughters {
+      background: #fff3cd; color: #ffc107;
+    }
+    #deceasedSummary {
+      font-size: 1.3rem; font-weight: 700; color: #1e40af;
+      text-align: center; margin-bottom: 15px;
+      text-shadow: 0 0 6px #3b59d9;
+    }
+    #deceasedShare {
+      font-size: 1.25rem; font-weight: 700; color: #1e3a8a;
+      text-align: center; margin-top: 20px; text-shadow: 0 0 5px #2c4adf;
+    }
+    @media print {
+      body { background: #fff !important; padding: 0 !important; color: #000 !important; }
+      .input-card, label, input, select, .btn { display: none !important; }
+      .result-card { box-shadow: none !important; border-radius: 0 !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="text-center mb-4"><h2 class="fw-bold">জমি ভাগ</h2></div>
+
+    <div class="input-card" id="inputCard">
+      <form id="calcForm" novalidate>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <label>মরহুম/মরহুমা</label>
+            <select id="deceasedGender" class="form-select" onchange="toggleSpouseLabel()">
+              <option value="">-- নির্বাচন করুন --</option>
+              <option value="husband">মরহুম (পুরুষ)</option>
+              <option value="wife">মরহুমা (মহিলা)</option>
+            </select>
+          </div>
+          <div class="col-md-8">
+            <label>নাম</label>
+            <input type="text" id="deceasedName" class="form-control" placeholder="মৃত ব্যক্তির নাম লিখুন" />
+          </div>
+
+          <div class="col-md-6">
+            <label>জমির পরিমাণ (শতক)</label>
+            <input type="text" id="deceasedLand" class="form-control" placeholder="বাংলা/ইংরেজি ইনপুট" />
+          </div>
+
+          <div class="col-md-6">
+            <label id="spouseLabel">স্বামী/স্ত্রীর নাম</label>
+            <input type="text" id="spouseInput" class="form-control" placeholder="নাম লিখুন (স্ত্রী হলে কমা দিয়ে একাধিক)" />
+          </div>
+
+          <div class="col-md-6 d-flex align-items-center">
+            <input type="checkbox" id="spouseDeceased" />
+            <label class="ms-2 mb-0" style="user-select:none;">স্বামী/স্ত্রী মৃত</label>
+          </div>
+
+          <div class="col-md-6">
+            <label>ছেলের সংখ্যা</label>
+            <input type="text" id="numSons" class="form-control" oninput="handleSonInput()" />
+          </div>
+          <div class="col-md-6">
+            <label>মেয়ের সংখ্যা</label>
+            <input type="text" id="numDaughters" class="form-control" oninput="handleDaughterInput()" />
+          </div>
+
+          <div class="col-12 text-center">
+            <button type="button" class="btn btn-primary btn-lg" onclick="calculate()">🔘 হিসাব করুন</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="result-card" id="resultCard" style="display:none;">
+      <div id="deceasedSummary"></div>
+      <h4>ফলাফল</h4>
+      <div id="resultTable"></div>
+      <div id="deceasedShare"></div>
+      <div class="text-center mt-3">
+        <button class="btn btn-success" onclick="window.print()">🖨️ প্রিন্ট করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // বাংলা থেকে ইংরেজি রূপান্তর
+    function bnToEn(s) {
+      const m = { "০":"0","১":"1","২":"2","৩":"3","৪":"4","৫":"5","৬":"6","৭":"7","৮":"8","৯":"9" };
+      return s.replace(/[০-৯]/g, d=>m[d]);
+    }
+    // ইংরেজি থেকে বাংলা রূপান্তর
+    function convertBn(n) {
+      const m = { "0":"০","1":"১","2":"২","3":"৩","4":"৪","5":"৫","6":"৬","7":"৭","8":"৮","9":"৯",".":"." };
+      return n.toString().replace(/[0-9.]/g, d=>m[d]);
+    }
+
+    function toggleSpouseLabel() {
+      const g = document.getElementById("deceasedGender").value;
+      const lbl = document.getElementById("spouseLabel");
+      if (g==="husband") lbl.textContent="স্ত্রীদের নাম";
+      else if (g==="wife") lbl.textContent="স্বামীর নাম";
+      else lbl.textContent="স্বামী/স্ত্রীর নাম";
+    }
+
+    function handleSonInput() {
+      const v = +bnToEn(document.getElementById("numSons").value)||0;
+      let h = ""; for (let i=1;i<=v;i++) h+=`<input type="text" class="form-control mb-1 son-name" placeholder="ছেলে ${i} এর নাম" />`;
+      document.getElementById("sonsDiv")?.remove();
+      const div = document.createElement("div"); div.id="sonsDiv"; div.className="mt-2"; div.innerHTML=h;
+      document.getElementById("numSons").parentElement.append(div);
+      saveFormData();
+    }
+
+    function handleDaughterInput() {
+      const v = +bnToEn(document.getElementById("numDaughters").value)||0;
+      let h = ""; for (let i=1;i<=v;i++) h+=`<input type="text" class="form-control mb-1 daughter-name" placeholder="মেয়ে ${i} এর নাম" />`;
+      document.getElementById("daughtersDiv")?.remove();
+      const div = document.createElement("div"); div.id="daughtersDiv"; div.className="mt-2"; div.innerHTML=h;
+      document.getElementById("numDaughters").parentElement.append(div);
+      saveFormData();
+    }
+
+    function isPositiveInteger(str) {
+      return /^[০-৯0-9]+$/.test(str) && +bnToEn(str) > 0;
+    }
+
+    function validateInputs() {
+      const g = document.getElementById("deceasedGender").value;
+      const name = document.getElementById("deceasedName").value.trim();
+      const landRaw = document.getElementById("deceasedLand").value.trim();
+      const land = parseFloat(bnToEn(landRaw));
+
+      if (!g) { alert("মরহুম/মরহুমা নির্বাচন করুন"); return false; }
+      if (!name) { alert("মৃত ব্যক্তির নাম লিখুন"); return false; }
+      if (!landRaw || isNaN(land) || land <= 0) { alert("সঠিক জমির পরিমাণ লিখুন"); return false; }
+
+      const spouseDeceased = document.getElementById("spouseDeceased").checked;
+      const spousesRaw = document.getElementById("spouseInput").value.trim();
+      const spouses = spousesRaw ? spousesRaw.split(",").map(s => s.trim()).filter(s => s) : [];
+
+      if (!spouseDeceased && spouses.length === 0) {
+        alert("স্বামী/স্ত্রীদের নাম লিখুন অথবা মৃত হিসেবে চিহ্নিত করুন");
+        return false;
+      }
+
+      const sonsRaw = document.getElementById("numSons").value.trim();
+      const daughtersRaw = document.getElementById("numDaughters").value.trim();
+
+      if ((sonsRaw && !isPositiveInteger(sonsRaw)) || (daughtersRaw && !isPositiveInteger(daughtersRaw))) {
+        alert("সন্তানের সংখ্যা অবশ্যই ধনাত্মক পূর্ণসংখ্যা হতে হবে");
+        return false;
+      }
+
+      const sonsCount = +bnToEn(sonsRaw) || 0;
+      const daughtersCount = +bnToEn(daughtersRaw) || 0;
+
+      const sonNames = Array.from(document.getElementsByClassName("son-name")).map(i => i.value.trim());
+      if (sonNames.length !== sonsCount || sonNames.some(n => !n)) {
+        alert("সন্তানদের নামগুলো সঠিকভাবে পূরণ করুন");
+        return false;
+      }
+
+      const daughterNames = Array.from(document.getElementsByClassName("daughter-name")).map(i => i.value.trim());
+      if (daughterNames.length !== daughtersCount || daughterNames.some(n => !n)) {
+        alert("সন্তানদের নামগুলো সঠিকভাবে পূরণ করুন");
+        return false;
+      }
+
+      return true;
+    }
+
+    function saveFormData() {
+      const data = {
+        deceasedGender: document.getElementById("deceasedGender").value,
+        deceasedName: document.getElementById("deceasedName").value.trim(),
+        deceasedLand: document.getElementById("deceasedLand").value.trim(),
+        spouseInput: document.getElementById("spouseInput").value.trim(),
+        spouseDeceased: document.getElementById("spouseDeceased").checked,
+        numSons: document.getElementById("numSons").value.trim(),
+        numDaughters: document.getElementById("numDaughters").value.trim(),
+        sonNames: Array.from(document.getElementsByClassName("son-name")).map(i => i.value.trim()),
+        daughterNames: Array.from(document.getElementsByClassName("daughter-name")).map(i => i.value.trim())
+      };
+      localStorage.setItem("landDivisionForm", JSON.stringify(data));
+    }
+
+    function loadFormData() {
+      const data = JSON.parse(localStorage.getItem("landDivisionForm"));
+      if (!data) return;
+
+      document.getElementById("deceasedGender").value = data.deceasedGender || "";
+      toggleSpouseLabel();
+      document.getElementById("deceasedName").value = data.deceasedName || "";
+      document.getElementById("deceasedLand").value = data.deceasedLand || "";
+      document.getElementById("spouseInput").value = data.spouseInput || "";
+      document.getElementById("spouseDeceased").checked = data.spouseDeceased || false;
+      document.getElementById("numSons").value = data.numSons || "";
+      document.getElementById("numDaughters").value = data.numDaughters || "";
+
+      handleSonInput();
+      handleDaughterInput();
+
+      const sonInputs = document.getElementsByClassName("son-name");
+      if (data.sonNames && sonInputs.length === data.sonNames.length) {
+        data.sonNames.forEach((name, i) => { sonInputs[i].value = name; });
+      }
+
+      const daughterInputs = document.getElementsByClassName("daughter-name");
+      if (data.daughterNames && daughterInputs.length === data.daughterNames.length) {
+        data.daughterNames.forEach((name, i) => { daughterInputs[i].value = name; });
+      }
+    }
+
+    function calculate() {
+      if (!validateInputs()) return;
+
+      const g = document.getElementById("deceasedGender").value;
+      const name = document.getElementById("deceasedName").value.trim();
+      const land = parseFloat(bnToEn(document.getElementById("deceasedLand").value));
+      const spouseDeceased = document.getElementById("spouseDeceased").checked;
+      const spousesRaw = document.getElementById("spouseInput").value.trim();
+      const spouses = spousesRaw ? spousesRaw.split(",").map(s => s.trim()).filter(s => s) : [];
+
+      const sonsCount = +(bnToEn(document.getElementById("numSons").value)) || 0;
+      const daughtersCount = +(bnToEn(document.getElementById("numDaughters").value)) || 0;
+
+      const sonNames = Array.from(document.getElementsByClassName("son-name")).map(i => i.value.trim());
+      const daughterNames = Array.from(document.getElementsByClassName("daughter-name")).map(i => i.value.trim());
+
+      const spouseRel = g==="husband"?"স্ত্রী":"স্বামী";
+      const totalUnits = 1000;
+      let unitsLeft = totalUnits;
+
+      let shares = [];
+      let spouseShare=0;
+      if (!spouseDeceased && spouses.length>0) {
+        spouseShare = ((sonsCount+daughtersCount)>0)
+          ? (spouseRel==="স্ত্রী"?totalUnits/8:totalUnits/4)
+          : (spouseRel==="স্ত্রী"?totalUnits/4:totalUnits/2);
+        const each = spouseShare/spouses.length;
+        spouses.forEach(s=>shares.push({person:s,relation:spouseRel,val:each}));
+      }
+      unitsLeft -= spouseShare;
+
+      if (sonsCount+daughtersCount>0) {
+        const parts = sonsCount*2 + daughtersCount;
+        const per = unitsLeft/parts;
+        sonNames.forEach(n=>shares.push({person:n,relation:"ছেলে",val:per*2}));
+        daughterNames.forEach(n=>shares.push({person:n,relation:"মেয়ে",val:per}));
+      }
+
+      const groups = {
+        spouse: shares.filter(s=>s.relation===spouseRel),
+        sons: shares.filter(s=>s.relation==="ছেলে"),
+        daughters: shares.filter(s=>s.relation==="মেয়ে")
+      };
+
+      function renderGroup(arr, title, cls){
+        let html="";
+        arr.forEach(sh=>{
+          const v=(land*sh.val)/totalUnits;
+          html+=`<tr><td>${sh.person}</td><td>${sh.relation}</td><td>${convertBn(v.toFixed(3))}</td></tr>`;
+        });
+        if (arr.length){
+          const sum = arr.reduce((a,b)=>a+b.val,0);
+          const v = (land*sum)/totalUnits;
+          html+=`<tr class="summary-row ${cls}"><td colspan="2">মোট ${title} জমি</td><td>${convertBn(v.toFixed(3))}</td></tr>`;
+        }
+        return html;
+      }
+
+      let tbl=`<table><thead><tr><th>নাম</th><th>সম্পর্ক</th><th>জমির পরিমাণ</th></tr></thead><tbody>`;
+      tbl+=renderGroup(groups.spouse, spouseRel==="স্ত্রী"?"স্ত্রীদের":"স্বামীর", "spouse");
+      tbl+=renderGroup(groups.sons, "ছেলেদের", "sons");
+      tbl+=renderGroup(groups.daughters, "মেয়েদের", "daughters");
+      tbl+="</tbody></table>";
+
+      document.getElementById("deceasedSummary").innerHTML=`<b>${name}</b> (${g==="husband"?"মরহুম":"মরহুমা"}) - মোট জমি ${convertBn(land)} শতক`;
+      document.getElementById("resultTable").innerHTML = tbl;
+      document.getElementById("deceasedShare").textContent = "";
+
+      document.getElementById("inputCard").style.display="none";
+      document.getElementById("resultCard").style.display="block";
+      window.scrollTo({top:0, behavior:"smooth"});
+
+      saveFormData();
+    }
+
+    window.onload = () => {
+      loadFormData();
+
+      // Save form data on input changes automatically
+      document.querySelectorAll("#calcForm input, #calcForm select").forEach(el => {
+        el.addEventListener("input", saveFormData);
+        el.addEventListener("change", saveFormData);
+      });
+    };
+  </script>
+</body>
+</html>
