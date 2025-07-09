@@ -156,6 +156,7 @@
   <audio id="clickSound" src="https://actions.google.com/sounds/v1/ui/click.ogg" preload="auto"></audio>
 
   <script>
+    // Helper functions
     function bnToEn(s) {
       const m = { "০":"0","১":"1","২":"2","৩":"3","৪":"4","৫":"5","৬":"6","৭":"7","৮":"8","৯":"9" };
       return s.replace(/[০-৯]/g, d=>m[d]);
@@ -260,48 +261,45 @@
       window.scrollTo({top:0, behavior:"smooth"});
     }
 
-    // --- সাউন্ড কন্ট্রোল ---
-
+    // --- Sound control section ---
     const keySound = document.getElementById('keySound');
     const focusSound = document.getElementById('focusSound');
     const clickSound = document.getElementById('clickSound');
 
     let isInputFocused = false;
 
-    // ইনপুট ফোকাস হলে টাইপিং সাউন্ড বাজবে
+    // On keydown, if input is focused, play keySound
     document.addEventListener('keydown', () => {
       if(isInputFocused){
         keySound.currentTime = 0;
-        keySound.play().catch(() => {});
+        keySound.play().catch(()=>{});
       }
     });
 
-    // ইনপুট ও সিলেক্ট ফোকাস ও ব্লার হ্যান্ডলার
+    // Set focus and blur event on inputs and selects to track focus state
     const inputsAndSelects = document.querySelectorAll('input, select, textarea');
     inputsAndSelects.forEach(el => {
       el.addEventListener('focus', () => {
         isInputFocused = true;
         focusSound.currentTime = 0;
-        focusSound.play().catch(() => {});
+        focusSound.play().catch(()=>{});
       });
       el.addEventListener('blur', () => {
         isInputFocused = false;
       });
     });
 
-    // deceasedGender select এ option change এ ক্লিক সাউন্ড
-    const deceasedGenderSelect = document.getElementById('deceasedGender');
-    deceasedGenderSelect.addEventListener('change', () => {
+    // On deceasedGender select change, play clickSound
+    document.getElementById('deceasedGender').addEventListener('change', () => {
       clickSound.currentTime = 0;
-      clickSound.play().catch(() => {});
+      clickSound.play().catch(()=>{});
     });
 
-    // বাটন ক্লিকে ক্লিক সাউন্ড
-    const buttons = document.querySelectorAll('button, .btn');
-    buttons.forEach(btn => {
+    // Play clickSound on any button click
+    document.querySelectorAll('button, .btn').forEach(btn => {
       btn.addEventListener('click', () => {
         clickSound.currentTime = 0;
-        clickSound.play().catch(() => {});
+        clickSound.play().catch(()=>{});
       });
     });
   </script>
