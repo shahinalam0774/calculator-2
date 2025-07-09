@@ -260,30 +260,48 @@
       window.scrollTo({top:0, behavior:"smooth"});
     }
 
-    // কি-বোর্ড প্রেসে সাউন্ড
+    // --- সাউন্ড কন্ট্রোল ---
+
+    const keySound = document.getElementById('keySound');
+    const focusSound = document.getElementById('focusSound');
+    const clickSound = document.getElementById('clickSound');
+
+    let isInputFocused = false;
+
+    // ইনপুট ফোকাস হলে টাইপিং সাউন্ড বাজবে
     document.addEventListener('keydown', () => {
-      const sound = document.getElementById('keySound');
-      sound.currentTime = 0;
-      sound.play().catch(() => {});
+      if(isInputFocused){
+        keySound.currentTime = 0;
+        keySound.play().catch(() => {});
+      }
     });
 
-    // ইনপুট/সিলেক্ট ফোকাসে সাউন্ড
+    // ইনপুট ও সিলেক্ট ফোকাস ও ব্লার হ্যান্ডলার
     const inputsAndSelects = document.querySelectorAll('input, select, textarea');
     inputsAndSelects.forEach(el => {
       el.addEventListener('focus', () => {
-        const sound = document.getElementById('focusSound');
-        sound.currentTime = 0;
-        sound.play().catch(() => {});
+        isInputFocused = true;
+        focusSound.currentTime = 0;
+        focusSound.play().catch(() => {});
+      });
+      el.addEventListener('blur', () => {
+        isInputFocused = false;
       });
     });
 
-    // মাউস ক্লিক বাটনে সাউন্ড
+    // deceasedGender select এ option change এ ক্লিক সাউন্ড
+    const deceasedGenderSelect = document.getElementById('deceasedGender');
+    deceasedGenderSelect.addEventListener('change', () => {
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+    });
+
+    // বাটন ক্লিকে ক্লিক সাউন্ড
     const buttons = document.querySelectorAll('button, .btn');
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
-        const sound = document.getElementById('clickSound');
-        sound.currentTime = 0;
-        sound.play().catch(() => {});
+        clickSound.currentTime = 0;
+        clickSound.play().catch(() => {});
       });
     });
   </script>
