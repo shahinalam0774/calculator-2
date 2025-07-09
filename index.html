@@ -150,18 +150,18 @@
     </div>
   </div>
 
+  <!-- কী প্রেসে সাউন্ড প্লে করার জন্য -->
+  <audio id="keySound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+
   <script>
-    // বাংলা থেকে ইংরেজি রূপান্তর
     function bnToEn(s) {
       const m = { "০":"0","১":"1","২":"2","৩":"3","৪":"4","৫":"5","৬":"6","৭":"7","৮":"8","৯":"9" };
       return s.replace(/[০-৯]/g, d=>m[d]);
     }
-    // ইংরেজি থেকে বাংলা রূপান্তর
     function convertBn(n) {
       const m = { "0":"০","1":"১","2":"২","3":"৩","4":"৪","5":"৫","6":"৬","7":"৭","8":"৮","9":"৯",".":"." };
       return n.toString().replace(/[0-9.]/g, d=>m[d]);
     }
-
     function toggleSpouseLabel() {
       const g = document.getElementById("deceasedGender").value;
       const lbl = document.getElementById("spouseLabel");
@@ -169,131 +169,37 @@
       else if (g==="wife") lbl.textContent="স্বামীর নাম";
       else lbl.textContent="স্বামী/স্ত্রীর নাম";
     }
-
     function handleSonInput() {
       const v = +bnToEn(document.getElementById("numSons").value)||0;
       let h = ""; for (let i=1;i<=v;i++) h+=`<input type="text" class="form-control mb-1 son-name" placeholder="ছেলে ${i} এর নাম" />`;
-      document.getElementById("sonsDiv")?.remove();
+      document.getElementById("sonsDiv")?.remove(); 
       const div = document.createElement("div"); div.id="sonsDiv"; div.className="mt-2"; div.innerHTML=h;
       document.getElementById("numSons").parentElement.append(div);
-      saveFormData();
     }
-
     function handleDaughterInput() {
       const v = +bnToEn(document.getElementById("numDaughters").value)||0;
       let h = ""; for (let i=1;i<=v;i++) h+=`<input type="text" class="form-control mb-1 daughter-name" placeholder="মেয়ে ${i} এর নাম" />`;
-      document.getElementById("daughtersDiv")?.remove();
+      document.getElementById("daughtersDiv")?.remove(); 
       const div = document.createElement("div"); div.id="daughtersDiv"; div.className="mt-2"; div.innerHTML=h;
       document.getElementById("numDaughters").parentElement.append(div);
-      saveFormData();
-    }
-
-    function isPositiveInteger(str) {
-      return /^[০-৯0-9]+$/.test(str) && +bnToEn(str) > 0;
-    }
-
-    function validateInputs() {
-      const g = document.getElementById("deceasedGender").value;
-      const name = document.getElementById("deceasedName").value.trim();
-      const landRaw = document.getElementById("deceasedLand").value.trim();
-      const land = parseFloat(bnToEn(landRaw));
-
-      if (!g) { alert("মরহুম/মরহুমা নির্বাচন করুন"); return false; }
-      if (!name) { alert("মৃত ব্যক্তির নাম লিখুন"); return false; }
-      if (!landRaw || isNaN(land) || land <= 0) { alert("সঠিক জমির পরিমাণ লিখুন"); return false; }
-
-      const spouseDeceased = document.getElementById("spouseDeceased").checked;
-      const spousesRaw = document.getElementById("spouseInput").value.trim();
-      const spouses = spousesRaw ? spousesRaw.split(",").map(s => s.trim()).filter(s => s) : [];
-
-      if (!spouseDeceased && spouses.length === 0) {
-        alert("স্বামী/স্ত্রীদের নাম লিখুন অথবা মৃত হিসেবে চিহ্নিত করুন");
-        return false;
-      }
-
-      const sonsRaw = document.getElementById("numSons").value.trim();
-      const daughtersRaw = document.getElementById("numDaughters").value.trim();
-
-      if ((sonsRaw && !isPositiveInteger(sonsRaw)) || (daughtersRaw && !isPositiveInteger(daughtersRaw))) {
-        alert("সন্তানের সংখ্যা অবশ্যই ধনাত্মক পূর্ণসংখ্যা হতে হবে");
-        return false;
-      }
-
-      const sonsCount = +bnToEn(sonsRaw) || 0;
-      const daughtersCount = +bnToEn(daughtersRaw) || 0;
-
-      const sonNames = Array.from(document.getElementsByClassName("son-name")).map(i => i.value.trim());
-      if (sonNames.length !== sonsCount || sonNames.some(n => !n)) {
-        alert("সন্তানদের নামগুলো সঠিকভাবে পূরণ করুন");
-        return false;
-      }
-
-      const daughterNames = Array.from(document.getElementsByClassName("daughter-name")).map(i => i.value.trim());
-      if (daughterNames.length !== daughtersCount || daughterNames.some(n => !n)) {
-        alert("সন্তানদের নামগুলো সঠিকভাবে পূরণ করুন");
-        return false;
-      }
-
-      return true;
-    }
-
-    function saveFormData() {
-      const data = {
-        deceasedGender: document.getElementById("deceasedGender").value,
-        deceasedName: document.getElementById("deceasedName").value.trim(),
-        deceasedLand: document.getElementById("deceasedLand").value.trim(),
-        spouseInput: document.getElementById("spouseInput").value.trim(),
-        spouseDeceased: document.getElementById("spouseDeceased").checked,
-        numSons: document.getElementById("numSons").value.trim(),
-        numDaughters: document.getElementById("numDaughters").value.trim(),
-        sonNames: Array.from(document.getElementsByClassName("son-name")).map(i => i.value.trim()),
-        daughterNames: Array.from(document.getElementsByClassName("daughter-name")).map(i => i.value.trim())
-      };
-      localStorage.setItem("landDivisionForm", JSON.stringify(data));
-    }
-
-    function loadFormData() {
-      const data = JSON.parse(localStorage.getItem("landDivisionForm"));
-      if (!data) return;
-
-      document.getElementById("deceasedGender").value = data.deceasedGender || "";
-      toggleSpouseLabel();
-      document.getElementById("deceasedName").value = data.deceasedName || "";
-      document.getElementById("deceasedLand").value = data.deceasedLand || "";
-      document.getElementById("spouseInput").value = data.spouseInput || "";
-      document.getElementById("spouseDeceased").checked = data.spouseDeceased || false;
-      document.getElementById("numSons").value = data.numSons || "";
-      document.getElementById("numDaughters").value = data.numDaughters || "";
-
-      handleSonInput();
-      handleDaughterInput();
-
-      const sonInputs = document.getElementsByClassName("son-name");
-      if (data.sonNames && sonInputs.length === data.sonNames.length) {
-        data.sonNames.forEach((name, i) => { sonInputs[i].value = name; });
-      }
-
-      const daughterInputs = document.getElementsByClassName("daughter-name");
-      if (data.daughterNames && daughterInputs.length === data.daughterNames.length) {
-        data.daughterNames.forEach((name, i) => { daughterInputs[i].value = name; });
-      }
     }
 
     function calculate() {
-      if (!validateInputs()) return;
-
       const g = document.getElementById("deceasedGender").value;
       const name = document.getElementById("deceasedName").value.trim();
       const land = parseFloat(bnToEn(document.getElementById("deceasedLand").value));
+      if (!g||!name||isNaN(land)||land<=0) { alert("সব তথ্য পূরণ করুন"); return; }
+
       const spouseDeceased = document.getElementById("spouseDeceased").checked;
       const spousesRaw = document.getElementById("spouseInput").value.trim();
-      const spouses = spousesRaw ? spousesRaw.split(",").map(s => s.trim()).filter(s => s) : [];
+      const spouses = spousesRaw?spousesRaw.split(",").map(s=>s.trim()).filter(s=>s):[];
 
-      const sonsCount = +(bnToEn(document.getElementById("numSons").value)) || 0;
-      const daughtersCount = +(bnToEn(document.getElementById("numDaughters").value)) || 0;
+      const sonsCount = +(bnToEn(document.getElementById("numSons").value))||0;
+      const daughtersCount = +(bnToEn(document.getElementById("numDaughters").value))||0;
 
-      const sonNames = Array.from(document.getElementsByClassName("son-name")).map(i => i.value.trim());
-      const daughterNames = Array.from(document.getElementsByClassName("daughter-name")).map(i => i.value.trim());
+      const sonNames = Array.from(document.getElementsByClassName("son-name")).map(i=>i.value.trim());
+      const daughterNames = Array.from(document.getElementsByClassName("daughter-name")).map(i=>i.value.trim());
+      if (sonNames.length!==sonsCount||daughterNames.length!==daughtersCount) { alert("সন্তানের নাম পূরণ করুন"); return; }
 
       const spouseRel = g==="husband"?"স্ত্রী":"স্বামী";
       const totalUnits = 1000;
@@ -317,12 +223,12 @@
         daughterNames.forEach(n=>shares.push({person:n,relation:"মেয়ে",val:per}));
       }
 
+      // Grouped rendering with subtotals
       const groups = {
         spouse: shares.filter(s=>s.relation===spouseRel),
         sons: shares.filter(s=>s.relation==="ছেলে"),
         daughters: shares.filter(s=>s.relation==="মেয়ে")
       };
-
       function renderGroup(arr, title, cls){
         let html="";
         arr.forEach(sh=>{
@@ -350,19 +256,15 @@
       document.getElementById("inputCard").style.display="none";
       document.getElementById("resultCard").style.display="block";
       window.scrollTo({top:0, behavior:"smooth"});
-
-      saveFormData();
     }
 
-    window.onload = () => {
-      loadFormData();
+    // কী প্রেসে সাউন্ড প্লে
+    document.addEventListener('keydown', () => {
+      const sound = document.getElementById('keySound');
+      sound.currentTime = 0;
+      sound.play().catch(() => {});
+    });
 
-      // Save form data on input changes automatically
-      document.querySelectorAll("#calcForm input, #calcForm select").forEach(el => {
-        el.addEventListener("input", saveFormData);
-        el.addEventListener("change", saveFormData);
-      });
-    };
   </script>
 </body>
 </html>
