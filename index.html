@@ -150,8 +150,10 @@
     </div>
   </div>
 
-  <!-- কী প্রেসে সাউন্ড প্লে করার জন্য -->
-  <audio id="keySound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+  <!-- সাউন্ড ফাইল -->
+  <audio id="keySound" src="https://actions.google.com/sounds/v1/keyboard/keyboard_press_click.ogg" preload="auto"></audio>
+  <audio id="focusSound" src="https://actions.google.com/sounds/v1/ui/click_on_keyboard.ogg" preload="auto"></audio>
+  <audio id="clickSound" src="https://actions.google.com/sounds/v1/ui/click.ogg" preload="auto"></audio>
 
   <script>
     function bnToEn(s) {
@@ -258,13 +260,32 @@
       window.scrollTo({top:0, behavior:"smooth"});
     }
 
-    // কী প্রেসে সাউন্ড প্লে
+    // কি-বোর্ড প্রেসে সাউন্ড
     document.addEventListener('keydown', () => {
       const sound = document.getElementById('keySound');
       sound.currentTime = 0;
       sound.play().catch(() => {});
     });
 
+    // ইনপুট/সিলেক্ট ফোকাসে সাউন্ড
+    const inputsAndSelects = document.querySelectorAll('input, select, textarea');
+    inputsAndSelects.forEach(el => {
+      el.addEventListener('focus', () => {
+        const sound = document.getElementById('focusSound');
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+      });
+    });
+
+    // মাউস ক্লিক বাটনে সাউন্ড
+    const buttons = document.querySelectorAll('button, .btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sound = document.getElementById('clickSound');
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+      });
+    });
   </script>
 </body>
 </html>
