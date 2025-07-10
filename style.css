@@ -1,46 +1,28 @@
-/* Reset কিছু বেসিক স্টাইল */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ফন্ট ও বেসিক বডি স্টাইল */
+@import url('https://fonts.googleapis.com/css2?family=Kalpurush&display=swap');
 
 body {
   font-family: 'Kalpurush', sans-serif;
-  background: #f0f4ff;
+  background: #e8f0fe;
+  padding: 40px 0 100px 0;
   color: #1a237e;
-  padding: 40px 20px;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  margin: 0;
 }
 
+/* কন্টেইনার */
 .container {
   max-width: 900px;
-  width: 100%;
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 30px 40px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  margin: 0 auto;
+  padding: 0 15px;
 }
 
-/* হেডার */
-h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  font-weight: 700;
-  color: #283593;
-  text-shadow: 0 0 8px #6c7ff7;
-}
-
-/* ইনপুট কার্ড ডিজাইন */
-.input-card {
+/* কার্ড স্টাইল */
+.input-card, .result-card {
   background: linear-gradient(145deg, #ffffff, #dbe6ff);
   border-radius: 20px;
   padding: 30px 40px;
-  box-shadow: 8px 8px 15px #b3c1ff, -8px -8px 15px #ffffff;
   margin-bottom: 30px;
+  box-shadow: 8px 8px 15px #b3c1ff, -8px -8px 15px #ffffff;
   transition: box-shadow 0.3s ease;
 }
 
@@ -48,33 +30,26 @@ h2 {
   box-shadow: 10px 10px 20px #a1b0ff, -10px -10px 20px #f4f8ff;
 }
 
-/* লেবেল স্টাইল */
+/* লেবেল */
 label {
   font-weight: 600;
   color: #1a237e;
-  display: block;
-  margin-bottom: 6px;
 }
 
-/* ইনপুট ও সিলেক্ট ফিল্ড */
-input.form-control,
-select.form-select {
-  width: 100%;
-  padding: 10px 15px;
+/* ইনপুট, সিলেক্ট ফিল্ড */
+select.form-select, input.form-control {
   border-radius: 15px;
   border: none;
   background: #f0f5ff;
   box-shadow: inset 5px 5px 10px #b0c4ff, inset -5px -5px 10px #ffffff;
-  font-size: 1rem;
   transition: box-shadow 0.3s ease;
-  color: #283593;
+  font-size: 1rem;
 }
 
-input.form-control:focus,
-select.form-select:focus {
+select:focus, input:focus {
   outline: none;
-  background: #e6ecff;
   box-shadow: inset 5px 5px 15px #7a8aff, inset -5px -5px 15px #e6ecff;
+  background: #e6ecff;
 }
 
 /* বাটন স্টাইল */
@@ -84,14 +59,9 @@ button.btn-primary {
   border-radius: 15px;
   padding: 12px 40px;
   font-weight: 700;
-  color: #fff;
   box-shadow: 5px 5px 10px #2f3e94, -5px -5px 10px #4c61d2;
-  cursor: pointer;
   transition: background 0.3s ease;
-  display: inline-block;
-  margin: 0 auto;
-  font-size: 1.1rem;
-  user-select: none;
+  cursor: pointer;
 }
 
 button.btn-primary:hover {
@@ -99,21 +69,23 @@ button.btn-primary:hover {
   box-shadow: 8px 8px 20px #1c2a6e, -8px -8px 20px #5870ff;
 }
 
-/* রেজাল্ট কার্ড */
-.result-card {
-  background: linear-gradient(145deg, #ffffff, #dbe6ff);
-  border-radius: 20px;
-  padding: 30px 40px;
-  box-shadow: 8px 8px 15px #b3c1ff, -8px -8px 15px #ffffff;
-  margin-bottom: 30px;
-}
-
+/* রেজাল্ট কার্ডের হেডিং */
 .result-card h4 {
   font-weight: 700;
   color: #283593;
   margin: 45px 0 25px 0;
   text-align: center;
   text-shadow: 0 0 8px #6c7ff7;
+}
+
+/* সারাংশ টেক্সট */
+#deceasedSummary {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e40af;
+  text-align: center;
+  margin-bottom: 15px;
+  text-shadow: 0 0 6px #3b59d9;
 }
 
 /* টেবিল স্টাইল */
@@ -123,6 +95,7 @@ table {
   border-spacing: 0 10px;
   font-weight: 600;
   color: #1a237e;
+  user-select: none;
 }
 
 th {
@@ -149,7 +122,7 @@ tr:hover td {
   font-weight: 700;
 }
 
-/* সামারি রো */
+/* সারাংশ রো স্টাইল */
 .summary-row {
   font-weight: 700;
   background: #d0d9ff;
@@ -172,7 +145,18 @@ tr:hover td {
   color: #ffc107;
 }
 
-/* ফূটার */
+/* উদাহরণ কার্ড */
+.example-card {
+  background: #fff9c4;
+  border-radius: 15px;
+  padding: 20px 30px;
+  margin-top: 30px;
+  color: #665500;
+  font-weight: 600;
+  box-shadow: 5px 5px 15px #f2e08f, -5px -5px 15px #fffdd0;
+}
+
+/* ফুটার */
 footer {
   text-align: center;
   padding: 15px 0;
@@ -192,16 +176,56 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* মোবাইল রেসপন্সিভ */
-@media (max-width: 768px) {
-  .container {
-    padding: 20px 20px;
+/* প্রিন্ট মিডিয়া */
+@media print {
+  body {
+    background: #fff !important;
+    padding: 0 !important;
+    color: #000 !important;
   }
-  .input-card, .result-card {
-    padding: 20px 20px;
+  .input-card, label, input, select, .btn, .example-card, footer {
+    display: none !important;
   }
-  button.btn-primary {
-    width: 100%;
-    padding: 12px 0;
+  .result-card {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
   }
+}
+
+/* ========================= */
+/* Bootstrap Modal কাস্টমাইজেশন */
+/* ========================= */
+
+.modal-content {
+  background: linear-gradient(145deg, #ffffff, #dbe6ff);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 8px 8px 25px #b3c1ff, -8px -8px 25px #ffffff;
+  font-family: "Kalpurush", sans-serif;
+}
+
+.modal-header, .modal-footer {
+  border: none;
+}
+
+.modal-title {
+  color: #1a237e;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.btn-close {
+  filter: invert(30%);
+  transition: filter 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-close:hover {
+  filter: invert(60%);
+}
+
+.modal-body {
+  color: #283593;
+  font-size: 1.1rem;
 }
