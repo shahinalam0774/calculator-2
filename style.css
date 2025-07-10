@@ -1,133 +1,185 @@
-body { 
-  font-family: "Kalpurush", sans-serif; 
-  background: #e8f0fe; 
-  padding: 40px 0 100px 0; 
+@import url('https://fonts.googleapis.com/css2?family=Kalpurush&display=swap');
+
+body {
+  font-family: 'Kalpurush', Arial, sans-serif;
+  background: #f5f7ff;
+  padding: 40px 20px 100px 20px;
+  color: #1b1b3a;
+  line-height: 1.6;
 }
-.container { max-width: 900px; }
-.input-card, .result-card {
-  background: linear-gradient(145deg, #ffffff, #dbe6ff);
-  border-radius: 20px; 
-  padding: 30px 40px; 
-  margin-bottom: 30px;
-  box-shadow: 8px 8px 15px #b3c1ff, -8px -8px 15px #ffffff;
-  transition: box-shadow 0.3s ease;
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
 }
-.input-card:hover {
-  box-shadow: 10px 10px 20px #a1b0ff, -10px -10px 20px #f4f8ff;
-}
-label { font-weight: 600; color: #1a237e; }
-select.form-select, input.form-control {
-  border-radius: 15px; 
-  border: none; 
-  background: #f0f5ff;
-  box-shadow: inset 5px 5px 10px #b0c4ff, inset -5px -5px 10px #ffffff;
-  transition: box-shadow 0.3s ease;
-}
-select:focus, input:focus {
-  outline: none;
-  box-shadow: inset 5px 5px 15px #7a8aff, inset -5px -5px 15px #e6ecff;
-  background: #e6ecff;
-}
-button.btn-primary {
-  background: #3949ab; 
-  border: none; 
-  border-radius: 15px;
-  padding: 12px 40px; 
-  font-weight: 700;
-  box-shadow: 5px 5px 10px #2f3e94, -5px -5px 10px #4c61d2;
-  transition: background 0.3s ease;
-}
-button.btn-primary:hover {
-  background: #2f3e94;
-  box-shadow: 8px 8px 20px #1c2a6e, -8px -8px 20px #5870ff;
-}
-.result-card h4 {
-  font-weight: 700; 
-  color: #283593; 
-  margin: 45px 0 25px 0;
-  text-align: center; 
-  text-shadow: 0 0 8px #6c7ff7;
-}
-#deceasedSummary {
-  font-size: 1.3rem; 
-  font-weight: 700; 
-  color: #1e40af;
-  text-align: center; 
-  margin-bottom: 15px;
-  text-shadow: 0 0 6px #3b59d9;
-}
-table {
-  width: 100%; 
-  border-collapse: separate; 
-  border-spacing: 0 10px;
-  font-weight: 600; 
-  color: #1a237e; 
-  user-select: none;
-}
-th {
-  background: #c5cae9; 
-  border-radius: 12px 12px 0 0;
-  padding: 12px 15px; 
+
+h2 {
+  font-weight: 800;
+  color: #2e3a87;
+  margin-bottom: 25px;
   text-align: center;
-  box-shadow: inset 0 -3px 5px #9fa8da;
+  text-shadow: 1px 1px 3px rgba(46,58,135,0.3);
 }
+
+.input-card, .result-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 30px 35px;
+  margin-bottom: 35px;
+  box-shadow: 0 10px 25px rgba(46,58,135,0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.input-card:hover {
+  box-shadow: 0 15px 35px rgba(46,58,135,0.2);
+}
+
+label {
+  font-weight: 700;
+  color: #283593;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+select.form-select, input.form-control {
+  border-radius: 12px;
+  border: 1px solid #c5cae9;
+  background: #f7f9ff;
+  padding: 10px 12px;
+  font-size: 16px;
+  color: #283593;
+  box-shadow: inset 3px 3px 7px #d6ddff, inset -3px -3px 7px #ffffff;
+  transition: all 0.3s ease;
+}
+
+select.form-select:focus, input.form-control:focus {
+  outline: none;
+  border-color: #3949ab;
+  box-shadow: 0 0 8px #3949ab;
+  background: #e9eeff;
+}
+
+button.btn-primary {
+  background: #3949ab;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 45px;
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(57,73,171,0.5);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+button.btn-primary:hover {
+  background: #2e3a87;
+  box-shadow: 0 8px 18px rgba(46,58,135,0.7);
+}
+
+.result-card h4 {
+  font-weight: 800;
+  color: #2e3a87;
+  margin: 45px 0 30px 0;
+  text-align: center;
+}
+
+#deceasedSummary {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #283593;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 0 0 7px rgba(50,69,209,0.6);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  font-weight: 600;
+  color: #283593;
+  user-select: none;
+  font-size: 16px;
+}
+
+th {
+  background: #c5cae9;
+  border-radius: 12px 12px 0 0;
+  padding: 14px 16px;
+  text-align: center;
+  box-shadow: inset 0 -4px 8px #9fa8da;
+}
+
 td {
-  background: #e8ecf9; 
-  text-align: center; 
-  padding: 12px 15px;
-  border-bottom: 2px solid #c5cae9; 
-  box-shadow: inset 0 3px 5px #f2f5ff;
-  border-radius: 0 0 12px 12px; 
+  background: #e8ecf9;
+  text-align: center;
+  padding: 14px 16px;
+  border-bottom: 3px solid #c5cae9;
+  box-shadow: inset 0 4px 8px #f2f5ff;
+  border-radius: 0 0 12px 12px;
   transition: background 0.2s ease;
 }
+
 tr:hover td {
-  background: #c5cae9; 
-  color: #283593; 
+  background: #b3c7ff;
+  color: #1a237e;
   font-weight: 700;
 }
+
 .summary-row {
-  font-weight: 700; 
-  background: #d0d9ff; 
+  font-weight: 700;
+  background: #d0d9ff;
   color: #283593;
-  box-shadow: inset 4px 4px 10px #b2bffb, inset -4px -4px 10px #f0f3ff;
+  box-shadow: inset 5px 5px 12px #aabaff, inset -5px -5px 12px #f1f3ff;
 }
+
 .summary-row.spouse {
-  background: #cfe2ff; 
+  background: #cfe2ff;
   color: #0d6efd;
 }
+
 .summary-row.sons {
-  background: #d1e7dd; 
+  background: #d1e7dd;
   color: #198754;
 }
+
 .summary-row.daughters {
-  background: #fff3cd; 
+  background: #fff3cd;
   color: #ffc107;
 }
+
 .example-card {
-  background: #fff9c4; 
-  border-radius: 15px; 
+  background: #fff9c4;
+  border-radius: 15px;
   padding: 20px 30px;
-  margin-top: 30px; 
-  color: #665500; 
-  font-weight: 600;
+  margin-top: 30px;
+  color: #665500;
+  font-weight: 700;
   box-shadow: 5px 5px 15px #f2e08f, -5px -5px 15px #fffdd0;
+  line-height: 1.5;
 }
+
 footer {
-  text-align: center; 
-  padding: 15px 0; 
+  text-align: center;
+  padding: 15px 0;
   font-size: 0.9rem;
-  color: #666; 
-  border-top: 1px solid #ddd; 
+  color: #666;
+  border-top: 1px solid #ddd;
   margin-top: 50px;
   user-select:none;
 }
+
 footer a {
-  color: #3949ab; 
+  color: #3949ab;
   text-decoration: none;
+  font-weight: 600;
 }
+
 footer a:hover {
   text-decoration: underline;
 }
+
 @media print {
   body { background: #fff !important; padding: 0 !important; color: #000 !important; }
   .input-card, label, input, select, .btn, .example-card, footer { display: none !important; }
